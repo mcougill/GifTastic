@@ -1,17 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>That's So Fetch</title>
+    <meta charset="utf-8">
+    <title>NomTastic GifTastic</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
         crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic|Sacramento" rel="stylesheet">
     <link rel="stylesheet" href=./assets/css/style.css>
 </head>
+
 <body>
+    <div class="container">
+        <h1>NomTastic GifTastic</h1>
+        <div id="foodView"></div>
+        <form id="foodForm">
+            <input type="text" id="foodInput">
+            <br>
+            <input id="addFood" type="submit" value="Add a Food">
+        </form>
+    </div>
 </body>
+
 <script type="text/javascript">
+    // Initial food array
+    var foodArr = ["Pizza", "Hot Dog", "Pineapple", "Taco"];
+    
+    function displayFoodInfo(){
+        var apiKey = "N4vdINy0iHjn7y7LkEZMTCWHbQbVhXRQ";
+    var food = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=funny+cat&api_key="+apiKey;
+    
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        .then(function(response) {
+         console.log("hi");
+        });
+}
+    
+    
+    function renderButtons() {
+        $("#foodView").empty();
+        for (var i = 0; i < foodArr.length; i++) {
+            var a = $("<button>");
+            a.addClass("food");
+            a.attr("data-name", foodArr[i]);
+            a.text(foodArr[i]);
+            $("#foodView").append(a);
+        }
+    }
+    $("#addFood").on("click", function (event) {
+        event.preventDefault();
+        var newFood = $("#foodInput").val().trim();
+        foodArr.push(newFood);
+        renderButtons();
+    });
+
+
+
+ $(document).on("click", ".food", displayFoodInfo);
+    renderButtons();
 </script>
+
+
 </html>
