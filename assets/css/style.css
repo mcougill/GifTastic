@@ -7,7 +7,7 @@ input {
 
 body {
     background-image: url("../images/background.jpeg");
-    background-size: cover;
+    background-size:cover;
   text-align: center;
   font-family: 'Didact Gothic', sans-serif;
 }

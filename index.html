@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
         crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic|Sacramento" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Didact+Gothic|Sacramento" rel="stylesheet">
     <link rel="stylesheet" href=./assets/css/style.css>
 </head>
 
@@ -20,28 +20,52 @@
             <br>
             <input id="addFood" type="submit" value="Add a Food">
         </form>
+        <div id="gifPlace"></div>
     </div>
 </body>
 
 <script type="text/javascript">
     // Initial food array
-    var foodArr = ["Pizza", "Hot Dog", "Pineapple", "Taco"];
-    
-    function displayFoodInfo(){
+    var foodArr = ["Pizza", "Hot Dog", "Cheese", "Taco"];
+    function displayFoodInfo() {
+        //use AJAX to access giphy API
         var apiKey = "N4vdINy0iHjn7y7LkEZMTCWHbQbVhXRQ";
-    var food = $(this).attr("data-name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=funny+cat&api_key="+apiKey;
-    
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-        .then(function(response) {
-         console.log("hi");
-        });
-}
-    
-    
+        var food = $(this).attr("data-name");
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + food + "&api_key=" + apiKey;
+        $("#gifPlace").empty();
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+            //iterates through JSON response and appends gifs to page
+            .done(function (response) {
+                var results = response.data;
+                for (var i = 0; i < results.length; i++) {
+                    var gifDiv = $('<div class="gif">')
+                    var foodImage = $('<img src=' + results[i].images.fixed_height_still.url + ' data-still=' +
+                        results[i].images.fixed_height_still.url + ' data-animate=' +
+                        results[i].images.fixed_height.url + ' data-state="still" class="foodImage">');
+
+                    gifDiv.append(foodImage);
+                    $('#gifPlace').append(gifDiv);
+                }
+                $('#gifPlace').prepend('<br><div class="text-center">Click the gifs to animate them!</div>');
+            });
+    }
+
+    //uses data-state to animate/still gifs
+    function imageMove() {
+        var state = $(this).attr("data-state");
+        if (state == "still") {
+            $(this).attr("src", $(this).data("animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).data("still"));
+            $(this).attr("data-state", "still");
+        }
+    }
+
+    //puts button page and adds data attribute
     function renderButtons() {
         $("#foodView").empty();
         for (var i = 0; i < foodArr.length; i++) {
@@ -52,6 +76,7 @@
             $("#foodView").append(a);
         }
     }
+    
     $("#addFood").on("click", function (event) {
         event.preventDefault();
         var newFood = $("#foodInput").val().trim();
@@ -60,8 +85,9 @@
     });
 
 
-
- $(document).on("click", ".food", displayFoodInfo);
+    //on click event listeners
+    $(document).on("click", ".food", displayFoodInfo);
+    $(document).on("click", ".foodImage", imageMove);
     renderButtons();
 </script>
 
