@@ -6,10 +6,10 @@ input {
 }
 
 body {
-    background-image: url("../images/background.jpeg");
-    background-size:cover;
+    background: url("../images/kiwi.jpeg") ;
   text-align: center;
   font-family: 'Didact Gothic', sans-serif;
+  background-size: 100%;
 }
 
 h1 { 
