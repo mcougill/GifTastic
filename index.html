@@ -53,7 +53,7 @@
             });
     }
 
-    //uses data-state to animate/still gifs
+    //uses data-still/data-animate states to animate/still gifs on click
     function imageMove() {
         var state = $(this).attr("data-state");
         if (state == "still") {
@@ -65,7 +65,7 @@
         }
     }
 
-    //puts button page and adds data attribute
+    //puts button on page and adds data attribute
     function renderButtons() {
         $("#foodView").empty();
         for (var i = 0; i < foodArr.length; i++) {
@@ -76,7 +76,7 @@
             $("#foodView").append(a);
         }
     }
-    
+
     $("#addFood").on("click", function (event) {
         event.preventDefault();
         var newFood = $("#foodInput").val().trim();
